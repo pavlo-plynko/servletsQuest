@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
     <title>Servlet Quest</title>
@@ -8,14 +7,14 @@
 <body>
 <section>
     <a href="index.html">Начать заново</a>
-    <h3>${step.description}</h3>
+    <h3>${question.content}</h3>
 
-    <form action="${step.win || step.dead ? 'auth' : 'quest'}" method="get">
-        <c:forEach items="${step.options}" var="option">
-            <jsp:useBean id="option" type="com.codegym.servletTask.model.Step"/>
-            <input type="radio" name="option" value="${option.id}">${option.answer}<br>
+    <form action="${question.type == "LOST" || question.type == "WON" ? 'auth' : 'quest'}" method="get">
+        <c:forEach items="${answers}" var="answer">
+            <jsp:useBean id="answer" type="com.codegym.servletTask.model.Answer"/>
+            <input type="radio" name="answerid" value="${answer.id}">${answer.content}<br>
         </c:forEach>
-        <button type="submit">${step.win || step.dead ? 'Сыграть еще' : 'Ответить'}</button>
+        <button type="submit">${question.type == "LOST" || question.type == "WON" ? 'Сыграть еще' : 'Ответить'}</button>
     </form>
 </section>
 <br>

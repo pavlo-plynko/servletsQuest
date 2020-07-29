@@ -1,20 +1,30 @@
 package com.codegym.servletTask.web;
 
-import com.codegym.servletTask.model.Step;
+import com.codegym.servletTask.model.Answer;
+import com.codegym.servletTask.model.Question;
 import com.codegym.servletTask.model.Repository;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import java.io.IOException;
+import java.util.Collection;
 
 public class QuestServlet extends HttpServlet {
 
+    private final Repository repository = new Repository();
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        String option = request.getParameter("option");
-        Integer optionId = option == null ? 1 : Integer.parseInt(option);
-        Step step = Repository.getStepById(optionId);
-        request.setAttribute("step", step);
+        String answerId = request.getParameter("answerid");
+        Question question;
+        if (answerId != null) {
+            question = repository.getAnswerById(Integer.parseInt(answerId)).getTo();
+        } else {
+            question = repository.getQuestionById(1);
+        }
+        Collection<Answer> answers = repository.getAnswersByFromQuestionId(question.getId());
+        request.setAttribute("question", question);
+        request.setAttribute("answers", answers);
         addStatistics(request);
         request.getRequestDispatcher("/quest.jsp").forward(request, response);
     }

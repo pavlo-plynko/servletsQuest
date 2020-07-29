@@ -1,63 +1,58 @@
 package com.codegym.servletTask.model;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Repository {
 
-    private static Map<Integer, Step> steps = new HashMap<>();
+    private static final Map<Integer, Question> QUESTIONS = new HashMap<>();
+    private static final Map<Integer, Answer> ANSWERS = new HashMap<>();
 
-    static {
-        Step q1 = new Step(1);
-        q1.setDescription("Ты потерял память. Принять вызов НЛО?");
+    public Repository() {
+        Question q1 = new Question(1, "Ты потерял память. Принять вызов НЛО?", Question.Type.USUAL);
+        Question q2 = new Question(2, "Ты принял вызов. Поднимешся на мостик к их капитану?", Question.Type.USUAL);
+        Question q3 = new Question(3, "Ты отклонил вызов. Смерть.", Question.Type.LOST);
+        Question q4 = new Question(4, "Ты поднялся на мостик. Ты кто?", Question.Type.USUAL);
+        Question q5 = new Question(5, "Ты не пошел на переговоры. Смерть.", Question.Type.LOST);
+        Question q6 = new Question(6, "Тебя отвезли домой. Победа.", Question.Type.WON);
+        Question q7 = new Question(7, "Твою ложь разоблачили. Смерть.", Question.Type.LOST);
 
-        Step q2 = new Step(2);
-        q2.setAnswer("Принять вызов.");
-        q2.setDescription("Ты принял вызов. Поднимешся на мостик к их капитану?");
+        Answer a1 = new Answer(1, "Принять вызов.", q1, q2);
+        Answer a2 = new Answer(2, "Отклонить вызов.", q1, q3);
+        Answer a3 = new Answer(3, "Поднятся на мостик.", q2, q4);
+        Answer a4 = new Answer(4, "Отказаться подниматься на мостик.", q2, q5);
+        Answer a5 = new Answer(5, "Рассказать правду о себе.", q4, q6);
+        Answer a6 = new Answer(6, "Солгать о себе.", q4, q7);
 
-        Step q3 = new Step(3);
-        q3.setAnswer("Отклонить вызов");
-        q3.setDescription("Ты отклонил вызов. Смерть.");
-        q3.setDead(true);
+        QUESTIONS.put(q1.getId(), q1);
+        QUESTIONS.put(q2.getId(), q2);
+        QUESTIONS.put(q3.getId(), q3);
+        QUESTIONS.put(q4.getId(), q4);
+        QUESTIONS.put(q5.getId(), q5);
+        QUESTIONS.put(q6.getId(), q6);
+        QUESTIONS.put(q7.getId(), q7);
 
-        Step q4 = new Step(4);
-        q4.setAnswer("Поднятся на мостик.");
-        q4.setDescription("Ты поднялся на мостик. Ты кто?");
-
-        Step q5 = new Step(5);
-        q5.setAnswer("Отказаться подниматься на мостик.");
-        q5.setDescription("Ты не пошел на переговоры. Смерть.");
-        q5.setDead(true);
-
-        Step q6 = new Step(6);
-        q6.setAnswer("Рассказать правду о себе.");
-        q6.setDescription("Тебя отвезли домой. Победа.");
-        q6.setWin(true);
-
-        Step q7 = new Step(7);
-        q7.setAnswer("Солгать о себе.");
-        q7.setDescription("Твою ложь разоблачили. Смерть.");
-        q7.setDead(true);
-
-        q1.addOption(q2);
-        q1.addOption(q3);
-
-        q2.addOption(q4);
-        q2.addOption(q5);
-
-        q4.addOption(q6);
-        q4.addOption(q7);
-
-        steps.put(q1.getId(), q1);
-        steps.put(q2.getId(), q2);
-        steps.put(q3.getId(), q3);
-        steps.put(q4.getId(), q4);
-        steps.put(q5.getId(), q5);
-        steps.put(q6.getId(), q6);
-        steps.put(q7.getId(), q7);
+        ANSWERS.put(a1.getId(), a1);
+        ANSWERS.put(a2.getId(), a2);
+        ANSWERS.put(a3.getId(), a3);
+        ANSWERS.put(a4.getId(), a4);
+        ANSWERS.put(a5.getId(), a5);
+        ANSWERS.put(a6.getId(), a6);
     }
 
-    public static Step getStepById(Integer id) {
-        return steps.get(id);
+    public Question getQuestionById(Integer id) {
+        return QUESTIONS.get(id);
+    }
+
+    public Answer getAnswerById(Integer id) {
+        return ANSWERS.get(id);
+    }
+
+    public Collection<Answer> getAnswersByFromQuestionId(Integer id) {
+        return ANSWERS.values().stream()
+                .filter(a -> a.getFrom().getId().equals(id))
+                .collect(Collectors.toSet());
     }
 }
