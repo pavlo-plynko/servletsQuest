@@ -35,10 +35,12 @@ public class QuestServlet extends HttpServlet {
     }
 
     private void addStatistics(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        Cookie[] cookies = request.getCookies();
-        request.setAttribute("userName", session.getAttribute("name"));
         request.setAttribute("ip", request.getRemoteAddr());
+
+        HttpSession session = request.getSession();
+        request.setAttribute("userName", session.getAttribute("name"));
+
+        Cookie[] cookies = request.getCookies();
         request.setAttribute("attempt", findCookiesValueByName("gameAttempt", cookies));
     }
 

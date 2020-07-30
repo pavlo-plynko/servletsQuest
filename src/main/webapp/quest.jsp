@@ -23,8 +23,8 @@
 <br>
 <br>
 Статистика:<br>
-Имя в игре: <i>${userName}</i><br>
 IP address: <i>${ip}</i><br>
+Имя в игре: <i>${userName}</i><br>
 Количество игр: <i>${attempt}</i><br>
 </body>
 </html>

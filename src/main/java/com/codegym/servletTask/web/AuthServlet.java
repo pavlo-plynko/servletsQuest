@@ -12,6 +12,8 @@ public class AuthServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        req.setCharacterEncoding("UTF-8");
+
         int attempt = 1;
         Cookie[] cookies = req.getCookies();
         for (Cookie cookie : cookies) {
@@ -27,9 +29,10 @@ public class AuthServlet extends HttpServlet {
             Cookie cookie = new Cookie("gameAttempt", "" + attempt);
             resp.addCookie(cookie);
         }
+
         HttpSession session = req.getSession(true);
         String name = req.getParameter("name");
         session.setAttribute("name", name);
-        resp.sendRedirect("/quest");
+        resp.sendRedirect(req.getContextPath() + "/quest");
     }
 }
